@@ -14,7 +14,7 @@ class GameV2 {
         private const val AREA_BORDER_CHAR = "x"
         private const val AREA_BORDER_CHAR_CODE = 1
         private const val PLAYER_ONE = "^"
-        private const val PLAYER_TWO = "ˬ"
+        private const val PLAYER_TWO = "^"
         private const val PLAYER_ONE_CODE = 2
         private const val SHOOT = "o"
         private const val SHOOT_CODE = 3
@@ -140,6 +140,21 @@ class GameV2 {
             }
         }
 
+        fun movePlayerTwoRight() {
+            if (playerTwoPositionY < gameAreaWidth.toInt() - 2) {
+                // example: y - 1 = move left; x - 1  = move up
+                clearGameAreaSpaceInCoords(playerTwoPositionX, playerTwoPositionY)
+                updatePlayerTwoPosition(playerTwoPositionX, playerTwoPositionY + 1)
+            }
+        }
+
+        fun movePlayerTwoLeft() {
+            if (playerTwoPositionY > 1) {
+                clearGameAreaSpaceInCoords(playerTwoPositionX, playerTwoPositionY)
+                updatePlayerTwoPosition(playerTwoPositionX, playerTwoPositionY - 1)
+            }
+        }
+
         fun drawPlayerOneShoot() {
             // playerOnePositionX - 1 mean that 1 point higher than player character
             val shootPositionY = playerOnePositionY
@@ -151,16 +166,47 @@ class GameV2 {
                     gameRenderObserver.changeState()
                     delay(300L)
                     clearGameAreaSpaceInCoords(shootPositionX - i, shootPositionY)
-                    if (shootPositionX - i == playerTwoPositionX && shootPositionY == playerOnePositionY) {
+                    if (shootPositionX - i == playerTwoPositionX && shootPositionY == playerTwoPositionY) {
                         isGameFinish = true
                         isPlayerOneWin = true
-                        println("PLAYER ONE WIN")
                     }
                     gameRenderObserver.changeState()
                 }
             }
         }
 
+        fun drawPlayerTwoShootLoop() {
+            GlobalScope.launch {
+                while (!isGameFinish) {
+                    try {
+                        val shootPositionY = playerTwoPositionY
+                        val shootPositionX = playerTwoPositionX
+                        for (i in 1..gameAreaHeigth.toInt() - 3) {
+                            gameArea[shootPositionX + i][shootPositionY] = SHOOT_CODE
+                            gameRenderObserver.changeState()
+                            delay(300L)
+                            clearGameAreaSpaceInCoords(shootPositionX + i, shootPositionY)
+                            if (shootPositionX + i == playerOnePositionX && shootPositionY == playerOnePositionY) {
+                                isGameFinish = true
+                                isPlayerTwoWin = true
+                            }
+                            gameRenderObserver.changeState()
+                        }
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    movePlayerTwoTo()
+                    delay(600L)
+                }
+            }
+        }
+
+        //dummy player two gameplay
+        private fun movePlayerTwoTo() {
+            clearGameAreaSpaceInCoords(playerTwoPositionX, playerTwoPositionY)
+            updatePlayerTwoPosition(playerTwoPositionX, playerOnePositionY)
+        }
 
         private fun isGameStateChanged(): Boolean {
             return GameStateObserver().hasChanged()
@@ -170,10 +216,14 @@ class GameV2 {
 
         }
 
+        fun restartGame() {
+
+        }
+
 
     }
 
-    enum class WINNERS{
+    enum class WINNERS {
         PLAYER_ONE,
         PLAYER_TWO
     }
