@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AsciiWars</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="left">LEFT</string>
+    <string name="right">right</string>
+    <string name="fire">Fire</string>
+    <string name="game">%s</string>
+</resources>
