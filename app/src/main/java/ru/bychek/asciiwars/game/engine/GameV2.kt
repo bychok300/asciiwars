@@ -47,6 +47,11 @@ class GameV2 {
         var bulletPlayerTwoPositionX: Int = 0
 
         fun prepareGameEngine() {
+            // because it all static fields the doesnt change their last state
+            // thats why i always reassign it
+            isGameFinish = false
+            isPlayerOneWin = false
+            isPlayerTwoWin = false
             gameRenderObserver.addObserver(gameState)
             gameRenderObserver.changeState()
         }
@@ -212,8 +217,12 @@ class GameV2 {
             return GameStateObserver().hasChanged()
         }
 
-        fun startGame() {
-
+        fun startGame(gameAreaWidth: Int, gameAreaHeigth: Int,
+                      userStartPositionX: Int, userStartPositionY: Int) {
+            initGameArea(gameAreaWidth, gameAreaHeigth)
+            updatePlayerOnePosition(userStartPositionX, userStartPositionY)
+            updatePlayerTwoPosition(1, 1)
+            drawPlayerTwoShootLoop()
         }
 
         fun restartGame() {

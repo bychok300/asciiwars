@@ -8,16 +8,29 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <TextView
-            android:id="@+id/message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/title_home"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/game_box"
+            android:layout_width="414dp"
+            android:layout_height="569dp"
+            tools:context=".MainActivity" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/nav_view" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.816" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="1.0">
+    </android.support.constraint.ConstraintLayout>
+
+
+    <!--<TextView-->
+            <!--android:id="@+id/message"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+            <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+            <!--android:layout_marginTop="@dimen/activity_vertical_margin"-->
+            <!--android:text="@string/title_home"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"/>-->
 
     <android.support.design.widget.BottomNavigationView
             android:id="@+id/nav_view"
@@ -31,45 +44,45 @@
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_nav_menu"/>
 
-    <TextView
-            android:text="@string/game"
-            android:scrollbars = "vertical"
-            android:layout_width="396dp"
-            android:layout_height="418dp"
-            android:gravity="center"
-            android:id="@+id/game" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/nav_view"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
-    <Button
-            android:text="@string/left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/leftMoveBtn" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            android:layout_marginBottom="36dp" app:layout_constraintBottom_toTopOf="@+id/nav_view"/>
-    <Button
-            android:text="@string/right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rightMoveBtn" app:layout_constraintStart_toEndOf="@+id/leftMoveBtn"
-            android:layout_marginStart="8dp" android:layout_marginBottom="36dp"
-            app:layout_constraintBottom_toTopOf="@+id/nav_view"/>
-    <Button
-            android:text="@string/fire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fireBtn" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toEndOf="@+id/rightMoveBtn" android:layout_marginStart="8dp"
-            android:layout_marginBottom="36dp" app:layout_constraintBottom_toTopOf="@+id/nav_view"
-            app:layout_constraintHorizontal_bias="0.546"/>
-    <TextView
-            android:text=""
-            android:visibility="invisible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/winner" app:layout_constraintStart_toStartOf="@+id/game"
-            app:layout_constraintEnd_toEndOf="@+id/game" android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/game" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/nav_view"/>
+    <!--<TextView-->
+            <!--android:text="@string/game"-->
+            <!--android:scrollbars = "vertical"-->
+            <!--android:layout_width="396dp"-->
+            <!--android:layout_height="418dp"-->
+            <!--android:gravity="center"-->
+            <!--android:id="@+id/game" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"-->
+            <!--app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"-->
+            <!--android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/nav_view"-->
+            <!--android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>-->
+    <!--<Button-->
+            <!--android:text="@string/left"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/leftMoveBtn" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"-->
+            <!--android:layout_marginBottom="36dp" app:layout_constraintBottom_toTopOf="@+id/nav_view"/>-->
+    <!--<Button-->
+            <!--android:text="@string/right"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/rightMoveBtn" app:layout_constraintStart_toEndOf="@+id/leftMoveBtn"-->
+            <!--android:layout_marginStart="8dp" android:layout_marginBottom="36dp"-->
+            <!--app:layout_constraintBottom_toTopOf="@+id/nav_view"/>-->
+    <!--<Button-->
+            <!--android:text="@string/fire"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/fireBtn" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/rightMoveBtn" android:layout_marginStart="8dp"-->
+            <!--android:layout_marginBottom="36dp" app:layout_constraintBottom_toTopOf="@+id/nav_view"-->
+            <!--app:layout_constraintHorizontal_bias="0.546"/>-->
+    <!--<TextView-->
+            <!--android:text=""-->
+            <!--android:visibility="invisible"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/winner" app:layout_constraintStart_toStartOf="@+id/game"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/game" android:layout_marginEnd="8dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/game" android:layout_marginBottom="8dp"-->
+            <!--app:layout_constraintBottom_toTopOf="@+id/nav_view"/>-->
 
 </android.support.constraint.ConstraintLayout>

@@ -1,12 +1,6 @@
 package ru.bychek.asciiwars.listeners
 
-import android.content.Context
-
 class WinnerListener {
+    // TODO: implement who win hear
 
-    interface listen {
-        fun action(context: Context) {
-
-        }
-    }
 }
