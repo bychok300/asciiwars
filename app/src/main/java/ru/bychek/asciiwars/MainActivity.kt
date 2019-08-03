@@ -12,6 +12,7 @@ import android.widget.TextView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.bychek.asciiwars.alertDialog.LooserAlertDialog
 import ru.bychek.asciiwars.alertDialog.WinnerAlerDialog
 import ru.bychek.asciiwars.game.engine.GameV2
 
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         GameV2.updatePlayerOnePosition(userStartPositionX, userStartPositionY)
         GameV2.updatePlayerTwoPosition(1, 1)
         GameV2.startGame()
+        GameV2.drawPlayerTwoShootLoop()
 
         val leftMoveBtn: Button = findViewById(R.id.leftMoveBtn)
         val rightMoveBtn: Button = findViewById(R.id.rightMoveBtn)
@@ -101,10 +103,10 @@ class MainActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                     break
-                } else if (GameV2.isPlayerOneWin) {
+                } else if (GameV2.isPlayerTwoWin) {
                     try {
                         Handler(Looper.getMainLooper()).post {
-                            WinnerAlerDialog().show(this@MainActivity)
+                            LooserAlertDialog().show(this@MainActivity)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()

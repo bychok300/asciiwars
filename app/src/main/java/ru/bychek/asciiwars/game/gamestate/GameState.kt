@@ -15,7 +15,7 @@ class GameState : Observer {
         if (GameV2.isGameFinish) {
             if (GameV2.isPlayerOneWin) {
                 GameV2.winner = GameV2.WINNERS.PLAYER_ONE.name
-            } else {
+            } else if (GameV2.isPlayerTwoWin){
                 GameV2.winner = GameV2.WINNERS.PLAYER_TWO.name
             }
         }
