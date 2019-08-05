@@ -22,7 +22,7 @@ class GameRenderingTest : Observer {
 //        GameV2.initGameArea(10, 20)
 //        GameV2.updatePlayerOnePosition(2, 2)
 //        GameV2.updatePlayerOnePosition(3, 3)
-//        GameV2.startGame()
+//        GameV2.startGameWithBot()
     }
 
     @Test

@@ -18,8 +18,7 @@ import ru.bychek.asciiwars.alertDialog.LooserAlertDialog
 import ru.bychek.asciiwars.alertDialog.WinnerAlertDialog
 import ru.bychek.asciiwars.game.engine.GameV2
 
-
-class GameFragment : Fragment() {
+class GameWithFriendFragment : Fragment() {
 
     private var gameAreaWidth: Int = 0
     private var gameAreaHeigth: Int = 0
@@ -27,18 +26,18 @@ class GameFragment : Fragment() {
     private var userStartPositionY: Int = 0
 
     companion object {
-        fun newInstance(): GameFragment = GameFragment()
+        fun newInstance(): GameWithFriendFragment = GameWithFriendFragment()
         @SuppressLint("StaticFieldLeak")
         lateinit var gameTextView: TextView
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.game_fragment, container, false)
+        inflater.inflate(R.layout.game_with_friend_fragment, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        gameTextView = view!!.findViewById(R.id.game)
+        gameTextView = view!!.findViewById(R.id.game_with_friend)
 
         gameAreaWidth = 10
         gameAreaHeigth = 20
@@ -46,7 +45,7 @@ class GameFragment : Fragment() {
         userStartPositionY = gameAreaHeigth - 2
 
         GameV2.prepareGameEngine()
-        GameV2.startGameWithBot(gameAreaWidth, gameAreaHeigth, userStartPositionX, userStartPositionY)
+        GameV2.startGameWithFriend(gameAreaWidth, gameAreaHeigth, userStartPositionX, userStartPositionY)
 
 
         val leftMoveBtn: Button = view!!.findViewById(R.id.leftMoveBtn)
@@ -65,7 +64,22 @@ class GameFragment : Fragment() {
             GameV2.drawPlayerOneShoot()
         }
 
-        //TODO refactor. move it to standalone class
+        val leftMoveBtnP2: Button = view!!.findViewById(R.id.left_p2)
+        val rightMoveBtnP2: Button = view!!.findViewById(R.id.right_p2)
+        val fireBtnP2: Button = view!!.findViewById(R.id.fire_p2)
+
+        leftMoveBtnP2.setOnClickListener {
+            GameV2.movePlayerTwoLeft()
+        }
+
+        rightMoveBtnP2.setOnClickListener {
+            GameV2.movePlayerTwoRight()
+        }
+
+        fireBtnP2.setOnClickListener {
+            GameV2.drawPlayerTwoShoot()
+        }
+
         GlobalScope.launch {
             while (!GameV2.isGameFinish) {
                 delay(500)
@@ -90,5 +104,6 @@ class GameFragment : Fragment() {
                 }
             }
         }
+
     }
 }

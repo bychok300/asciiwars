@@ -17,11 +17,11 @@ class WinnerAlertDialog : AlertDialogFactory {
 
         builder.setPositiveButton("Try again?") { _, _ ->
             // recreate fragment => it will produce new game
-            FragmentHelper().preformFragmentReplace(context, GameFragment.newInstance(), R.id.container)
+            FragmentHelper().performFragmentReplace(context, GameFragment.newInstance(), R.id.container)
         }
 
 //        builder.setNegativeButton("Tap") { _, _ ->
-//            FragmentHelper().preformFragmentReplace(context, MenuFragment.newInstance(), R.id.container)
+//            FragmentHelper().performFragmentReplace(context, MenuFragment.newInstance(), R.id.container)
 //        }
 
         val dialog: AlertDialog = builder.create()

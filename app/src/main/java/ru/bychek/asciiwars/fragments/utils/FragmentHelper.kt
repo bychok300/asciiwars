@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity
 
 class FragmentHelper {
 
-    fun preformFragmentReplace(context: Context, fragment: Fragment, viewId: Int) {
+    fun performFragmentReplace(context: Context, fragment: Fragment, viewId: Int) {
         val fragmentManager = (context as FragmentActivity).supportFragmentManager
         fragmentManager.beginTransaction()
             .replace(viewId, fragment)

@@ -169,11 +169,29 @@ class GameV2 {
                 for (i in 1..gameAreaHeigth.toInt() - 3) {
                     gameArea[shootPositionX - i][shootPositionY] = SHOOT_CODE
                     gameRenderObserver.changeState()
-                    delay(300L)
+                    delay(150L)
                     clearGameAreaSpaceInCoords(shootPositionX - i, shootPositionY)
                     if (shootPositionX - i == playerTwoPositionX && shootPositionY == playerTwoPositionY) {
                         isGameFinish = true
                         isPlayerOneWin = true
+                    }
+                    gameRenderObserver.changeState()
+                }
+            }
+        }
+
+        fun drawPlayerTwoShoot() {
+            GlobalScope.launch {
+                val shootPositionY = playerTwoPositionY
+                val shootPositionX = playerTwoPositionX
+                for (i in 1..gameAreaHeigth.toInt() - 3) {
+                    gameArea[shootPositionX + i][shootPositionY] = SHOOT_CODE
+                    gameRenderObserver.changeState()
+                    delay(150L)
+                    clearGameAreaSpaceInCoords(shootPositionX + i, shootPositionY)
+                    if (shootPositionX + i == playerOnePositionX && shootPositionY == playerOnePositionY) {
+                        isGameFinish = true
+                        isPlayerTwoWin = true
                     }
                     gameRenderObserver.changeState()
                 }
@@ -189,7 +207,7 @@ class GameV2 {
                         for (i in 1..gameAreaHeigth.toInt() - 3) {
                             gameArea[shootPositionX + i][shootPositionY] = SHOOT_CODE
                             gameRenderObserver.changeState()
-                            delay(300L)
+                            delay(150L)
                             clearGameAreaSpaceInCoords(shootPositionX + i, shootPositionY)
                             if (shootPositionX + i == playerOnePositionX && shootPositionY == playerOnePositionY) {
                                 isGameFinish = true
@@ -217,12 +235,23 @@ class GameV2 {
             return GameStateObserver().hasChanged()
         }
 
-        fun startGame(gameAreaWidth: Int, gameAreaHeigth: Int,
-                      userStartPositionX: Int, userStartPositionY: Int) {
+        fun startGameWithBot(
+            gameAreaWidth: Int, gameAreaHeigth: Int,
+            userStartPositionX: Int, userStartPositionY: Int
+        ) {
             initGameArea(gameAreaWidth, gameAreaHeigth)
             updatePlayerOnePosition(userStartPositionX, userStartPositionY)
             updatePlayerTwoPosition(1, 1)
             drawPlayerTwoShootLoop()
+        }
+
+        fun startGameWithFriend(
+            gameAreaWidth: Int, gameAreaHeigth: Int,
+            userStartPositionX: Int, userStartPositionY: Int
+        ) {
+            initGameArea(gameAreaWidth, gameAreaHeigth)
+            updatePlayerOnePosition(userStartPositionX, userStartPositionY)
+            updatePlayerTwoPosition(1, 1)
         }
 
         fun restartGame() {
