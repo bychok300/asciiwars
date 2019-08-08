@@ -26,19 +26,22 @@ class GameFragment : Fragment() {
     private var userStartPositionX: Int = 0
     private var userStartPositionY: Int = 0
 
+
+
     companion object {
         fun newInstance(): GameFragment = GameFragment()
         @SuppressLint("StaticFieldLeak")
         lateinit var gameTextView: TextView
+        var withBotMode = false
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.game_fragment, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        gameTextView = view!!.findViewById(R.id.game)
+        gameTextView = view.findViewById(R.id.game)
 
         gameAreaWidth = 10
         gameAreaHeigth = 20
@@ -90,5 +93,9 @@ class GameFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun displayGameArea(){
+        GameFragment.gameTextView.text = GameV2.drawGameArea()
     }
 }

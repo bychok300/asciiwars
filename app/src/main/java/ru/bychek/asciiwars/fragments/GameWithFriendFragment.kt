@@ -25,19 +25,22 @@ class GameWithFriendFragment : Fragment() {
     private var userStartPositionX: Int = 0
     private var userStartPositionY: Int = 0
 
+
     companion object {
         fun newInstance(): GameWithFriendFragment = GameWithFriendFragment()
         @SuppressLint("StaticFieldLeak")
         lateinit var gameTextView: TextView
+        var withFriendMode = false
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.game_with_friend_fragment, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        gameTextView = view!!.findViewById(R.id.game_with_friend)
+        gameTextView = view.findViewById(R.id.game_with_friend)
 
         gameAreaWidth = 10
         gameAreaHeigth = 20
@@ -69,11 +72,11 @@ class GameWithFriendFragment : Fragment() {
         val fireBtnP2: Button = view!!.findViewById(R.id.fire_p2)
 
         leftMoveBtnP2.setOnClickListener {
-            GameV2.movePlayerTwoLeft()
+            GameV2.movePlayerTwoRight()
         }
 
         rightMoveBtnP2.setOnClickListener {
-            GameV2.movePlayerTwoRight()
+            GameV2.movePlayerTwoLeft()
         }
 
         fireBtnP2.setOnClickListener {
@@ -104,6 +107,9 @@ class GameWithFriendFragment : Fragment() {
                 }
             }
         }
+    }
 
+    fun displayGameArea() {
+        GameWithFriendFragment.gameTextView.text = GameV2.drawGameArea()
     }
 }
