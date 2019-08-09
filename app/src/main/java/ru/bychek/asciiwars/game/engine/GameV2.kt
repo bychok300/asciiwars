@@ -1,8 +1,13 @@
 package ru.bychek.asciiwars.game.engine
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.text.SpannableStringBuilder
+import android.text.style.ImageSpan
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.bychek.asciiwars.R
 import ru.bychek.asciiwars.game.gamestate.GameState
 import ru.bychek.asciiwars.game.gamestate.observer.GameStateObserver
 
@@ -13,7 +18,7 @@ class GameV2 {
         private const val BLANK_CHAR_CODE = 0
         private const val AREA_BORDER_CHAR = "x"
         private const val AREA_BORDER_CHAR_CODE = 1
-        private const val PLAYER_ONE = "^"
+        private const val PLAYER_ONE = R.drawable.ic_navigation_black_24dp
         private const val PLAYER_TWO = "^"
         private const val PLAYER_ONE_CODE = 2
         private const val SHOOT = "o"
@@ -22,9 +27,11 @@ class GameV2 {
         var isPlayerOneWin = false
         var isPlayerTwoWin = false
         var winner = ""
+        @SuppressLint("StaticFieldLeak")
+        lateinit var context: Context
 
-        lateinit var gameAreaWidth: Number
-        lateinit var gameAreaHeigth: Number
+        var gameAreaWidth: Number = 0
+        var gameAreaHeigth: Number = 0
 
         private var gameArea = Array(0) { IntArray(0) }
         private val gameRenderObserver = GameStateObserver()
@@ -34,8 +41,8 @@ class GameV2 {
 
         var shootPositionY: Int = 0
         var shootPositionX: Int = 0
-        var playerOnePositionX: Int = 0
-        var playerOnePositionY: Int = 0
+        var playerOnePositionX: Int = gameAreaWidth.toInt() - 1
+        var playerOnePositionY: Int = gameAreaHeigth.toInt() - 1
 
         var playerTwoPositionX: Int = 0
         var playerTwoPositionY: Int = 0
@@ -78,8 +85,8 @@ class GameV2 {
 
         }
 
-        fun drawGameArea(): String {
-            val sb = StringBuffer()
+        fun drawGameArea(): SpannableStringBuilder {
+            val sb = SpannableStringBuilder()
             gameArea.forEach { i ->
                 //println()
                 sb.append("\n")
@@ -94,7 +101,7 @@ class GameV2 {
                     }
                     if (j == PLAYER_ONE_CODE) {
                         //    print(PLAYER_ONE)
-                        sb.append(PLAYER_ONE)
+                        sb.append(" ", ImageSpan(context, PLAYER_ONE), 0)
                     }
                     if (j == SHOOT_CODE) {
                         //    print(SHOOT)
@@ -103,11 +110,11 @@ class GameV2 {
                     if (j == PLAYER_TWO_CODE) {
                         sb.append(PLAYER_TWO)
                     }
-                    //TODO check for player 2 shoot
 
                 }
             }
-            return sb.toString()
+
+            return sb
         }
 
         private fun clearGameAreaSpaceInCoords(x: Int, y: Int) {
@@ -198,7 +205,7 @@ class GameV2 {
             }
         }
 
-        fun drawPlayerTwoShootLoop() {
+        fun drawBotShootLoop() {
             GlobalScope.launch {
                 while (!isGameFinish) {
                     try {
@@ -242,7 +249,8 @@ class GameV2 {
             initGameArea(gameAreaWidth, gameAreaHeigth)
             updatePlayerOnePosition(userStartPositionX, userStartPositionY)
             updatePlayerTwoPosition(1, 1)
-            drawPlayerTwoShootLoop()
+            drawBotShootLoop()
+            //decreaseGameArea()
         }
 
         fun startGameWithFriend(
@@ -252,6 +260,22 @@ class GameV2 {
             initGameArea(gameAreaWidth, gameAreaHeigth)
             updatePlayerOnePosition(userStartPositionX, userStartPositionY)
             updatePlayerTwoPosition(1, 1)
+            //decreaseGameArea()
+        }
+
+        fun decreaseGameArea() {
+            GlobalScope.launch {
+                while (!isGameFinish) {
+                    delay(2000L)
+                    if (gameAreaHeigth != 6 && gameAreaWidth != 3) {
+                        gameAreaHeigth = gameAreaHeigth.toInt() - 1
+                        gameAreaWidth = gameAreaWidth.toInt() - 1
+                        gameArea = Array(gameAreaHeigth.toInt()) { IntArray(gameAreaWidth.toInt()) }
+                        initGameArea(gameAreaHeigth.toInt(), gameAreaWidth.toInt())
+                        gameRenderObserver.changeState()
+                    }
+                }
+            }
         }
 
         fun restartGame() {

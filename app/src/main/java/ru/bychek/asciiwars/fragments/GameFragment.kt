@@ -27,7 +27,6 @@ class GameFragment : Fragment() {
     private var userStartPositionY: Int = 0
 
 
-
     companion object {
         fun newInstance(): GameFragment = GameFragment()
         @SuppressLint("StaticFieldLeak")
@@ -41,6 +40,8 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        GameV2.context = this.context
+
         gameTextView = view.findViewById(R.id.game)
 
         gameAreaWidth = 10
@@ -52,9 +53,9 @@ class GameFragment : Fragment() {
         GameV2.startGameWithBot(gameAreaWidth, gameAreaHeigth, userStartPositionX, userStartPositionY)
 
 
-        val leftMoveBtn: Button = view!!.findViewById(R.id.leftMoveBtn)
-        val rightMoveBtn: Button = view!!.findViewById(R.id.rightMoveBtn)
-        val fireBtn: Button = view!!.findViewById(R.id.fireBtn)
+        val leftMoveBtn: Button = view.findViewById(R.id.leftMoveBtn)
+        val rightMoveBtn: Button = view.findViewById(R.id.rightMoveBtn)
+        val fireBtn: Button = view.findViewById(R.id.fireBtn)
 
         leftMoveBtn.setOnClickListener {
             GameV2.movePlayerOneLeft()
@@ -93,9 +94,7 @@ class GameFragment : Fragment() {
                 }
             }
         }
+
     }
 
-    fun displayGameArea(){
-        GameFragment.gameTextView.text = GameV2.drawGameArea()
-    }
 }

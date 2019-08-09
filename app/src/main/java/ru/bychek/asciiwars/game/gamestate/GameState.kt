@@ -17,7 +17,6 @@ class GameState : Observer {
             GameWithFriendFragment.gameTextView.text = GameV2.drawGameArea()
         }
 
-
         //TODO: create new observer for winner detecting becasue current implementation create huge load
         if (GameV2.isGameFinish) {
             if (GameV2.isPlayerOneWin) {

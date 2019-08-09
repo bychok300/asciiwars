@@ -40,6 +40,8 @@ class GameWithFriendFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        GameV2.context = this.context
+
         gameTextView = view.findViewById(R.id.game_with_friend)
 
         gameAreaWidth = 10
