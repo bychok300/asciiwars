@@ -41,8 +41,8 @@ class GameV2 {
 
         var shootPositionY: Int = 0
         var shootPositionX: Int = 0
-        var playerOnePositionX: Int = gameAreaWidth.toInt() - 1
-        var playerOnePositionY: Int = gameAreaHeigth.toInt() - 1
+        var playerOnePositionX: Int = 0
+        var playerOnePositionY: Int = 0
 
         var playerTwoPositionX: Int = 0
         var playerTwoPositionY: Int = 0
@@ -205,7 +205,7 @@ class GameV2 {
             }
         }
 
-        fun drawBotShootLoop() {
+        private fun drawBotShootLoop() {
             GlobalScope.launch {
                 while (!isGameFinish) {
                     try {
@@ -260,19 +260,46 @@ class GameV2 {
             initGameArea(gameAreaWidth, gameAreaHeigth)
             updatePlayerOnePosition(userStartPositionX, userStartPositionY)
             updatePlayerTwoPosition(1, 1)
-            //decreaseGameArea()
+            decreaseGameArea()
         }
 
+
         fun decreaseGameArea() {
+            //TODO fix bullet move on area decrease
             GlobalScope.launch {
                 while (!isGameFinish) {
-                    delay(2000L)
+                    delay(3500L)
+                    // currrent player one position local should be saved before area decreased
+                    val currPlOnePosX = playerOnePositionX
+                    val currPlOnePosY = playerOnePositionY
+
+                    val currPlTwoPosX = playerTwoPositionX
+                    val currPlTwoPosY = playerTwoPositionY
+
                     if (gameAreaHeigth != 6 && gameAreaWidth != 3) {
                         gameAreaHeigth = gameAreaHeigth.toInt() - 1
                         gameAreaWidth = gameAreaWidth.toInt() - 1
                         gameArea = Array(gameAreaHeigth.toInt()) { IntArray(gameAreaWidth.toInt()) }
                         initGameArea(gameAreaHeigth.toInt(), gameAreaWidth.toInt())
-                        gameRenderObserver.changeState()
+
+                        val plOnePosStartX = gameAreaHeigth.toInt() - 2
+                        val plOnePosStartY = gameAreaWidth.toInt() - 2
+
+                        if (plOnePosStartY != currPlOnePosY && currPlOnePosY != 1) {
+                            // remember : y - move left; x - 1 mode down
+                            updatePlayerOnePosition(plOnePosStartX, currPlOnePosY - 1)
+                        } else {
+                            updatePlayerOnePosition(plOnePosStartX, currPlOnePosY)
+                        }
+
+                        val plTwoPosStartX = 1
+                        val plTwoPosStartY = 1
+
+                        if (plTwoPosStartY != currPlTwoPosY && currPlTwoPosY != gameAreaWidth.toInt() - 2){
+                            updatePlayerTwoPosition(plTwoPosStartX, currPlTwoPosY - 1)
+                        } else {
+                            updatePlayerTwoPosition(plTwoPosStartX, currPlTwoPosY)
+                        }
                     }
                 }
             }
