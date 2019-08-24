@@ -14,16 +14,20 @@ import ru.bychek.asciiwars.game.gamestate.observer.GameStateObserver
 class GameV2 {
 
     companion object {
-        private const val BLANK_CHAR = "  "
+        private const val BLANK_CHAR = R.drawable.ic_blank_24dp
         private const val BLANK_CHAR_CODE = 0
-        private const val AREA_BORDER_CHAR = "x"
+        private const val AREA_BORDER_CHAR = R.drawable.ic_border
         private const val AREA_BORDER_CHAR_CODE = 1
-        private const val PLAYER_ONE = R.drawable.ic_navigation_black_24dp
-        private const val PLAYER_TWO = "^"
+        private const val PLAYER_ONE = R.drawable.ic_player_one_sceen
+        private const val PLAYER_TWO = R.drawable.ic_player_two_sceen
         private const val PLAYER_ONE_CODE = 2
-        private const val SHOOT = "o"
+        private const val SHOOT = R.drawable.ic_bullet_up_direct
         private const val SHOOT_CODE = 3
         private const val PLAYER_TWO_CODE = 4
+        private const val SHOOT_SPEED = 150L
+        private const val BOT_EACH_MOVE_SPEED = 600L
+        private const val DECREASING_AREA_SPEED = 5000L
+
         var isPlayerOneWin = false
         var isPlayerTwoWin = false
         var winner = ""
@@ -93,11 +97,11 @@ class GameV2 {
                 i.forEach { j ->
                     if (j == BLANK_CHAR_CODE) {
                         //      print(BLANK_CHAR)
-                        sb.append(BLANK_CHAR)
+                        sb.append(" ", ImageSpan(context, BLANK_CHAR), 0)
                     }
                     if (j == AREA_BORDER_CHAR_CODE) {
                         //    print(AREA_BORDER_CHAR)
-                        sb.append(AREA_BORDER_CHAR)
+                        sb.append(" ", ImageSpan(context, AREA_BORDER_CHAR), 0)
                     }
                     if (j == PLAYER_ONE_CODE) {
                         //    print(PLAYER_ONE)
@@ -105,10 +109,10 @@ class GameV2 {
                     }
                     if (j == SHOOT_CODE) {
                         //    print(SHOOT)
-                        sb.append(SHOOT)
+                        sb.append(" ", ImageSpan(context, SHOOT), 0 )
                     }
                     if (j == PLAYER_TWO_CODE) {
-                        sb.append(PLAYER_TWO)
+                        sb.append(" ", ImageSpan(context, PLAYER_TWO), 0)
                     }
 
                 }
@@ -176,7 +180,7 @@ class GameV2 {
                 for (i in 1..gameAreaHeigth.toInt() - 3) {
                     gameArea[shootPositionX - i][shootPositionY] = SHOOT_CODE
                     gameRenderObserver.changeState()
-                    delay(150L)
+                    delay(SHOOT_SPEED)
                     clearGameAreaSpaceInCoords(shootPositionX - i, shootPositionY)
                     if (shootPositionX - i == playerTwoPositionX && shootPositionY == playerTwoPositionY) {
                         isGameFinish = true
@@ -194,7 +198,7 @@ class GameV2 {
                 for (i in 1..gameAreaHeigth.toInt() - 3) {
                     gameArea[shootPositionX + i][shootPositionY] = SHOOT_CODE
                     gameRenderObserver.changeState()
-                    delay(150L)
+                    delay(SHOOT_SPEED)
                     clearGameAreaSpaceInCoords(shootPositionX + i, shootPositionY)
                     if (shootPositionX + i == playerOnePositionX && shootPositionY == playerOnePositionY) {
                         isGameFinish = true
@@ -206,6 +210,7 @@ class GameV2 {
         }
 
         private fun drawBotShootLoop() {
+            //TODO: draw shoot on correct way if area dereasing
             GlobalScope.launch {
                 while (!isGameFinish) {
                     try {
@@ -214,7 +219,7 @@ class GameV2 {
                         for (i in 1..gameAreaHeigth.toInt() - 3) {
                             gameArea[shootPositionX + i][shootPositionY] = SHOOT_CODE
                             gameRenderObserver.changeState()
-                            delay(150L)
+                            delay(SHOOT_SPEED)
                             clearGameAreaSpaceInCoords(shootPositionX + i, shootPositionY)
                             if (shootPositionX + i == playerOnePositionX && shootPositionY == playerOnePositionY) {
                                 isGameFinish = true
@@ -226,14 +231,14 @@ class GameV2 {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    movePlayerTwoTo()
-                    delay(600L)
+                    movePlayerTwoToPlayerOnePosition()
+                    delay(BOT_EACH_MOVE_SPEED)
                 }
             }
         }
 
         //dummy player two gameplay
-        private fun movePlayerTwoTo() {
+        private fun movePlayerTwoToPlayerOnePosition() {
             clearGameAreaSpaceInCoords(playerTwoPositionX, playerTwoPositionY)
             updatePlayerTwoPosition(playerTwoPositionX, playerOnePositionY)
         }
@@ -250,6 +255,7 @@ class GameV2 {
             updatePlayerOnePosition(userStartPositionX, userStartPositionY)
             updatePlayerTwoPosition(1, 1)
             drawBotShootLoop()
+            //TODO: make this optional enabling via setting fragment
             //decreaseGameArea()
         }
 
@@ -260,6 +266,7 @@ class GameV2 {
             initGameArea(gameAreaWidth, gameAreaHeigth)
             updatePlayerOnePosition(userStartPositionX, userStartPositionY)
             updatePlayerTwoPosition(1, 1)
+            //TODO: make this optional enabling via setting fragment
             decreaseGameArea()
         }
 
@@ -268,7 +275,7 @@ class GameV2 {
             //TODO fix bullet move on area decrease
             GlobalScope.launch {
                 while (!isGameFinish) {
-                    delay(3500L)
+                    delay(DECREASING_AREA_SPEED)
                     // currrent player one position local should be saved before area decreased
                     val currPlOnePosX = playerOnePositionX
                     val currPlOnePosY = playerOnePositionY
@@ -295,7 +302,7 @@ class GameV2 {
                         val plTwoPosStartX = 1
                         val plTwoPosStartY = 1
 
-                        if (plTwoPosStartY != currPlTwoPosY && currPlTwoPosY != gameAreaWidth.toInt() - 2){
+                        if (plTwoPosStartY != currPlTwoPosY && currPlTwoPosY != gameAreaWidth.toInt() - 2) {
                             updatePlayerTwoPosition(plTwoPosStartX, currPlTwoPosY - 1)
                         } else {
                             updatePlayerTwoPosition(plTwoPosStartX, currPlTwoPosY)

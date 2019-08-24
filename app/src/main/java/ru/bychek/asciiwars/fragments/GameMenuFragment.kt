@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import ru.bychek.asciiwars.R
+import ru.bychek.asciiwars.fragments.settings.PlayWithBotSettings
 import ru.bychek.asciiwars.fragments.utils.FragmentHelper
 
 class GameMenuFragment : Fragment() {
@@ -31,6 +33,11 @@ class GameMenuFragment : Fragment() {
         withFriend.setOnClickListener {
             GameWithFriendFragment.withFriendMode = true
             FragmentHelper().performFragmentReplace(context, GameWithFriendFragment.newInstance(), R.id.container)
+        }
+
+        val withBotSettingsBtn: ImageButton = view!!.findViewById(R.id.play_with_bot_sett_btn)
+        withBotSettingsBtn.setOnClickListener {
+            FragmentHelper().performFragmentReplace(context, PlayWithBotSettings.newInstance(), R.id.container)
         }
 
     }

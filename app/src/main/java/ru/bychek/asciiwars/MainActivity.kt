@@ -23,10 +23,6 @@ class MainActivity : AppCompatActivity() {
                 fragmentHelper.performFragmentReplace(this@MainActivity, GameMenuFragment.newInstance(), R.id.container )
                 return@OnNavigationItemSelectedListener true
             }
-//            R.id.navigation_notifications -> {
-//
-//                return@OnNavigationItemSelectedListener true
-//            }
         }
         false
     }
@@ -38,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         // set default selected menu item
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
+        navView.selectedItemId = R.id.navigation_play
 
     }
 }
