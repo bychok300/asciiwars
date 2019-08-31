@@ -5,21 +5,21 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import ru.bychek.asciiwars.R
 import ru.bychek.asciiwars.alertDialog.LooserAlertDialog
 import ru.bychek.asciiwars.alertDialog.WinnerAlertDialog
 import ru.bychek.asciiwars.game.engine.GameV2
 
 
-class GameFragment : Fragment() {
+
+class GameWithBotFragment : Fragment() {
 
     private var gameAreaWidth: Int = 0
     private var gameAreaHeigth: Int = 0
@@ -28,7 +28,7 @@ class GameFragment : Fragment() {
 
 
     companion object {
-        fun newInstance(): GameFragment = GameFragment()
+        fun newInstance(): GameWithBotFragment = GameWithBotFragment()
         @SuppressLint("StaticFieldLeak")
         lateinit var gameTextView: TextView
         var withBotMode = false
@@ -76,7 +76,12 @@ class GameFragment : Fragment() {
                 if (GameV2.isPlayerOneWin) {
                     try {
                         Handler(Looper.getMainLooper()).post {
-                            WinnerAlertDialog().show(context)
+                            try {
+                                WinnerAlertDialog().show(context)
+                            }catch (e: java.lang.Exception) {
+                                Log.d("WinnerAlertDialog","context is null. Seems that fragmen has changed")
+                                GameV2.isGameFinish = true
+                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -85,7 +90,13 @@ class GameFragment : Fragment() {
                 } else if (GameV2.isPlayerTwoWin) {
                     try {
                         Handler(Looper.getMainLooper()).post {
-                            LooserAlertDialog().show(context)
+
+                            try {
+                                LooserAlertDialog().show(context)
+                            }catch (e: java.lang.Exception) {
+                                Log.d("LooserAlertDialog","context is null. Seems that fragmen has changed")
+                                GameV2.isGameFinish = true
+                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -94,7 +105,5 @@ class GameFragment : Fragment() {
                 }
             }
         }
-
     }
-
 }

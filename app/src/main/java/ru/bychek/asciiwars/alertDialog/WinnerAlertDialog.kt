@@ -3,7 +3,7 @@ package ru.bychek.asciiwars.alertDialog
 import android.content.Context
 import android.support.v7.app.AlertDialog
 import ru.bychek.asciiwars.R
-import ru.bychek.asciiwars.fragments.GameFragment
+import ru.bychek.asciiwars.fragments.GameWithBotFragment
 import ru.bychek.asciiwars.fragments.utils.FragmentHelper
 
 
@@ -17,7 +17,7 @@ class WinnerAlertDialog : AlertDialogFactory {
 
         builder.setPositiveButton("Try again?") { _, _ ->
             // recreate fragment => it will produce new game
-            FragmentHelper().performFragmentReplace(context, GameFragment.newInstance(), R.id.container)
+            FragmentHelper().performFragmentReplace(context, GameWithBotFragment.newInstance(), R.id.container)
         }
 
 //        builder.setNegativeButton("Tap") { _, _ ->

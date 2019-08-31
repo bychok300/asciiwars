@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,7 +92,12 @@ class GameWithFriendFragment : Fragment() {
                 if (GameV2.isPlayerOneWin) {
                     try {
                         Handler(Looper.getMainLooper()).post {
-                            WinnerAlertDialog().show(context)
+                            try {
+                                WinnerAlertDialog().show(context)
+                            }catch (e: java.lang.Exception) {
+                                Log.d("WinnerAlertDialog","context is null. Seems that fragmen has changed")
+                                GameV2.isGameFinish = true
+                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -100,7 +106,13 @@ class GameWithFriendFragment : Fragment() {
                 } else if (GameV2.isPlayerTwoWin) {
                     try {
                         Handler(Looper.getMainLooper()).post {
-                            LooserAlertDialog().show(context)
+                            try {
+                                LooserAlertDialog().show(context)
+                            }catch (e: java.lang.Exception) {
+                                Log.d("WinnerAlertDialog","context is null. Seems that fragmen has changed")
+                                GameV2.isGameFinish = true
+                            }
+
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()

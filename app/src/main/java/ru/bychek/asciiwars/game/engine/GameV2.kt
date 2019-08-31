@@ -8,6 +8,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.bychek.asciiwars.R
+import ru.bychek.asciiwars.game.configs.GameConfig
 import ru.bychek.asciiwars.game.gamestate.GameState
 import ru.bychek.asciiwars.game.gamestate.observer.GameStateObserver
 
@@ -24,7 +25,7 @@ class GameV2 {
         private const val SHOOT = R.drawable.ic_bullet_up_direct
         private const val SHOOT_CODE = 3
         private const val PLAYER_TWO_CODE = 4
-        private const val SHOOT_SPEED = 150L
+        private val SHOOT_SPEED = GameConfig.shootSpeed
         private const val BOT_EACH_MOVE_SPEED = 600L
         private const val DECREASING_AREA_SPEED = 5000L
 
@@ -109,7 +110,7 @@ class GameV2 {
                     }
                     if (j == SHOOT_CODE) {
                         //    print(SHOOT)
-                        sb.append(" ", ImageSpan(context, SHOOT), 0 )
+                        sb.append(" ", ImageSpan(context, SHOOT), 0)
                     }
                     if (j == PLAYER_TWO_CODE) {
                         sb.append(" ", ImageSpan(context, PLAYER_TWO), 0)
@@ -177,16 +178,18 @@ class GameV2 {
             val shootPositionX = playerOnePositionX
             // launch a new coroutine in background and continue
             GlobalScope.launch {
-                for (i in 1..gameAreaHeigth.toInt() - 3) {
-                    gameArea[shootPositionX - i][shootPositionY] = SHOOT_CODE
-                    gameRenderObserver.changeState()
-                    delay(SHOOT_SPEED)
-                    clearGameAreaSpaceInCoords(shootPositionX - i, shootPositionY)
-                    if (shootPositionX - i == playerTwoPositionX && shootPositionY == playerTwoPositionY) {
-                        isGameFinish = true
-                        isPlayerOneWin = true
+                while (!isGameFinish) {
+                    for (i in 1..gameAreaHeigth.toInt() - 3) {
+                        gameArea[shootPositionX - i][shootPositionY] = SHOOT_CODE
+                        gameRenderObserver.changeState()
+                        delay(SHOOT_SPEED)
+                        clearGameAreaSpaceInCoords(shootPositionX - i, shootPositionY)
+                        if (shootPositionX - i == playerTwoPositionX && shootPositionY == playerTwoPositionY) {
+                            isGameFinish = true
+                            isPlayerOneWin = true
+                        }
+                        gameRenderObserver.changeState()
                     }
-                    gameRenderObserver.changeState()
                 }
             }
         }
@@ -195,16 +198,18 @@ class GameV2 {
             GlobalScope.launch {
                 val shootPositionY = playerTwoPositionY
                 val shootPositionX = playerTwoPositionX
-                for (i in 1..gameAreaHeigth.toInt() - 3) {
-                    gameArea[shootPositionX + i][shootPositionY] = SHOOT_CODE
-                    gameRenderObserver.changeState()
-                    delay(SHOOT_SPEED)
-                    clearGameAreaSpaceInCoords(shootPositionX + i, shootPositionY)
-                    if (shootPositionX + i == playerOnePositionX && shootPositionY == playerOnePositionY) {
-                        isGameFinish = true
-                        isPlayerTwoWin = true
+                while (!isGameFinish) {
+                    for (i in 1..gameAreaHeigth.toInt() - 3) {
+                        gameArea[shootPositionX + i][shootPositionY] = SHOOT_CODE
+                        gameRenderObserver.changeState()
+                        delay(SHOOT_SPEED)
+                        clearGameAreaSpaceInCoords(shootPositionX + i, shootPositionY)
+                        if (shootPositionX + i == playerOnePositionX && shootPositionY == playerOnePositionY) {
+                            isGameFinish = true
+                            isPlayerTwoWin = true
+                        }
+                        gameRenderObserver.changeState()
                     }
-                    gameRenderObserver.changeState()
                 }
             }
         }

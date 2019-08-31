@@ -25,8 +25,8 @@ class GameMenuFragment : Fragment() {
         val withBotBtn: Button = view!!.findViewById(R.id.play_with_bot)
 
         withBotBtn.setOnClickListener {
-            GameFragment.withBotMode = true
-            FragmentHelper().performFragmentReplace(context, GameFragment.newInstance(), R.id.container)
+            GameWithBotFragment.withBotMode = true
+            FragmentHelper().performFragmentReplace(context, GameWithBotFragment.newInstance(), R.id.container)
         }
 
         val withFriend: Button = view!!.findViewById(R.id.play_with_friend)

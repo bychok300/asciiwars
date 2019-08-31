@@ -1,6 +1,6 @@
 package ru.bychek.asciiwars.game.gamestate
 
-import ru.bychek.asciiwars.fragments.GameFragment
+import ru.bychek.asciiwars.fragments.GameWithBotFragment
 import ru.bychek.asciiwars.fragments.GameWithFriendFragment
 import ru.bychek.asciiwars.game.engine.GameV2
 import java.util.*
@@ -10,8 +10,8 @@ class GameState : Observer {
 
     override fun update(p0: Observable?, p1: Any?) {
         //TODO: refactor it. Need to get activity fields via context instead of static initialisation
-        if (GameFragment.withBotMode){
-            GameFragment.gameTextView.text = GameV2.drawGameArea()
+        if (GameWithBotFragment.withBotMode){
+            GameWithBotFragment.gameTextView.text = GameV2.drawGameArea()
         }
         if (GameWithFriendFragment.withFriendMode) {
             GameWithFriendFragment.gameTextView.text = GameV2.drawGameArea()
